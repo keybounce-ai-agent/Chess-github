@@ -1,0 +1,79 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any
+
+from .chess_core import Position
+
+__all__ = [
+    "BoardState",
+    "Timeline",
+    "Wave",
+    "ActionLog",
+    "Mark",
+    "BoardView",
+    "Forecast",
+]
+
+
+@dataclass
+class BoardState:
+    index: int
+    position: Position
+    move: Any | None = None
+
+
+@dataclass
+class Timeline:
+    states: list[BoardState] = field(default_factory=list)
+
+    def append_state(self, position: Position, move: Any | None = None) -> BoardState:
+        state = BoardState(index=len(self.states), position=position, move=move)
+        self.states.append(state)
+        return state
+
+    def replace_move(self, index: int, new_move: Any | None) -> None:
+        if index < 0 or index >= len(self.states):
+            raise IndexError(f"State index {index} out of range")
+        self.states[index].move = new_move
+
+
+@dataclass
+class Wave:
+    id: int
+    origin: int
+    front: int
+    halted: bool = False
+
+
+@dataclass
+class ActionLog:
+    entries: list[dict[str, Any]] = field(default_factory=list)
+
+    def append(self, actor: str, action: str, tick: int | None, config_hash: str) -> None:
+        self.entries.append({
+            "actor": actor,
+            "action": action,
+            "tick": tick,
+            "config_hash": config_hash,
+        })
+
+
+@dataclass
+class Mark:
+    index: int
+    kind: str
+
+
+@dataclass
+class BoardView:
+    now: Any
+    projected: Any
+    status: str = "certain"
+
+
+@dataclass
+class Forecast:
+    positions: list[Any]
+    eta: list[int]
+    stall_points: list[int | None]

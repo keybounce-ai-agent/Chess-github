@@ -1,33 +1,25 @@
 # Achronal Chess
 
-A Python implementation of the Achronal Chess rules described in `achronal-chess-design-v0.2.md`.
+A Python rules-engine prototype for the design described in `achronal-chess-design-v0.2.md`.
 
-This project is intentionally structured around the design document's architecture:
+## Structure
 
-- `chess_core` for legal chess logic and board interpretation
-- `timeline` for state history and wave mechanics
-- `economy` for chrono-energy and transfer accounting
-- `game` for turn order, freeze handling, and API surface
+- `src/achronal_chess/` — engine package
+- `tests/` — smoke tests for the public API
 
-## Quick start
+## Install
 
 ```bash
-pip install -e .
-python -m pytest
+python -m pip install -e .
 ```
 
-## Core objects
+## Example
 
-The engine exposes data classes aligned with the design document:
+```python
+from achronal_chess import Game, BalanceConfig
 
-- `BalanceConfig`
-- `Player`
-- `BoardState`
-- `Timeline`
-- `Wave`
-- `Mark`
-- `ActionLog`
-- `PresentMove`, `PastEdit`, `Respond`, `Pass`
-- `Game`
-
-The package is intentionally deterministic, JSON-serialisable, and operates with integer arithmetic in the economy layer.
+config = BalanceConfig()
+game = Game(config)
+print(game.current_player)
+print(game.players["white"].energy)
+```

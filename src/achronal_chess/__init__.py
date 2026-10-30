@@ -6,7 +6,6 @@ from typing import Any
 from .config import BalanceConfig
 
 __all__ = [
-    "BalanceConfig",
     "Player",
     "Mark",
     "BoardState",
@@ -46,10 +45,6 @@ class BoardState:
 class Timeline:
     states: list[BoardState] = field(default_factory=list)
 
-    def __post_init__(self) -> None:
-        if not self.states:
-            self.states = []
-
     def append_state(self, position: Any, move: Any | None = None) -> BoardState:
         state = BoardState(index=len(self.states), position=position, move=move)
         self.states.append(state)
@@ -87,7 +82,7 @@ class ActionLog:
 
 class GameError(RuntimeError):
     def __init__(self, code: str, message: str):
-        super().__init__(message)
+        super().__init__(f"{code}: {message}")
         self.code = code
         self.message = message
 
