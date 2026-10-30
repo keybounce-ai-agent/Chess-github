@@ -1,0 +1,18 @@
+[project]
+name = "achronal-chess"
+version = "0.1.0"
+description = "Achronal Chess engine and rules engine"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "chess>=1.10.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+testpaths = ["tests"]
